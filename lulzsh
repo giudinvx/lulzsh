@@ -1,0 +1,60 @@
+#!/bin/bash
+
+#		lulzsh
+#      
+#       Copyright 2010 Giuseppe D'Inverno <giudinvx[at]gmail[dot]com>
+#      
+#		This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
+#       
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#       
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#       MA 02110-1301, USA.
+
+function help
+{
+	echo "Usage:
+	$0 [OPTION] [\"Your String\"]
+	
+	Application Options:
+		-ut, --twitupd \"Some string\"	Update Twitter Account
+		-h,  --help	show this help message and exit"
+		exit 0
+}
+
+function twitterupd 
+{	
+	msg="$@" 
+	curl -u ${confvar[0]}:${confvar[1]} -d status="$msg" -d source="lulzsh" http://twitter.com/statuses/update.xml
+}
+	
+if [ ! -f "$HOME/.lulzshconf" ]
+then
+	for conf in "NAME" "PASSWORD"
+do
+	echo "$conf"
+	read value
+	confname="$conf=$value"
+	echo "$confname" >> "$HOME/.lulzshconf"
+done
+exit 0
+fi
+
+confvar=(`awk -F "=" '{ print $2 }' "$HOME/.lulzshconf"`)
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -ut|--twitupd) twitterupd $2; shift;;
+         -h|--help) help; shift;;
+         -*|--*) echo "$0: Error - Unknown option $1" 1>&2; exit 1;;
+         *) shift;;
+    esac
+done

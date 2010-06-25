@@ -33,7 +33,13 @@ function help
 function twitterupd 
 {	
 	msg="$@" 
-	curl -u ${confvar[0]}:${confvar[1]} -d status="$msg" -d source="lulzsh" http://twitter.com/statuses/update.xml
+	if [ `expr length "$msg"` -gt 144 ] 
+	then
+		echo "Message maximum consent 144 char" 
+		exit 0
+	else
+		curl -s -u ${confvar[0]}:${confvar[1]} -d status="$msg" -d source="lulzsh" http://twitter.com/statuses/update.xml
+	fi
 }
 	
 if [ ! -f "$HOME/.lulzshconf" ]

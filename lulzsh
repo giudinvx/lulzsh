@@ -46,6 +46,7 @@ function twitterupd
 		curl -s -o /dev/null -u ${confvar[0]}:${confvar[1]} -d status="$msg" -d source="lulzsh" http://twitter.com/statuses/update.xml
 		exit 0
 	elif [ ! -z "$wgetdem" -a -x "$wgetdem" ]
+	then
 		wget -q -O /dev/null --http-user=${confvar[0]} --http-password=${confvar[1]} --post-data="status=$msg" http://twitter.com:80/statuses/update.xml
 		exit 0
 	else

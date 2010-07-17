@@ -4,7 +4,7 @@
 #      
 #       Copyright 2010 Giuseppe D'Inverno <giudinvx[at]gmail[dot]com>
 #      
-#		This program is free software; you can redistribute it and/or modify
+#       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
 #       the Free Software Foundation; either version 2 of the License, or
 #       (at your option) any later version.
@@ -36,7 +36,7 @@ function twitterupd
 	
 	curldem=(`which curl`)
 	wgetdem=(`which wget`)
-	ncdem  =(`which nc`)
+	ncdem=(`which nc`)
 	
 	if [ `expr length "$msg"` -gt 144 ] 
 	then
@@ -52,9 +52,9 @@ function twitterupd
 		exit 0
 	elif [ ! -z "$ncdem" -a -x "$ncdem" ]
 	then
-		length =(`expr length "$msg" + 21`)
+		length=(`expr length "$msg" + 21`)
 		authb64=(`echo "${confvar[0]}:${confvar[1]}" | base64 | sed 's/=//g'`)
-		head   ="POST http://twitter.com/statuses/update.xml HTTP/1.1\r\nHost: twitter.com\r\nAccept: */*\r\nAuthorization: Basic $authb64\r\nContent-length: $length\r\nContent-type: application/x-www-form-urlencoded\r\nConnection: Close\r\n\r\nstatus=$msg&source=lulzsh"; echo -e $head | nc twitter.com 80
+		head="POST http://twitter.com/statuses/update.xml HTTP/1.1\r\nHost: twitter.com\r\nAccept: */*\r\nAuthorization: Basic $authb64\r\nContent-length: $length\r\nContent-type: application/x-www-form-urlencoded\r\nConnection: Close\r\n\r\nstatus=$msg&source=lulzsh"; echo -e $head | nc twitter.com 80
 		exit 0
 	else
 		echo "Please install curl, wget or netcat"
